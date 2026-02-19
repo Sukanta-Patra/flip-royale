@@ -100,3 +100,5 @@ InitTestScene*.unity*
 FlipRoyale/Library/
 FlipRoyale/Temp/
 FlipRoyale/UserSettings/Layouts/
+FlipRoyale/Packages/packages-lock.json
+FlipRoyale/ProjectSettings/ShaderGraphSettings.asset
