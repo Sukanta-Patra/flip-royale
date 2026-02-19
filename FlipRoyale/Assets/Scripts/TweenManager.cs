@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,11 +19,13 @@ public struct Tween
 
     public float duration;
     public float elapsed;
+
+    public Action onComplete;
 }
 
 public class TweenManager : MonoBehaviour
 {
-    public static TweenManager Instance;
+    public static TweenManager Instance { get; private set; }
 
     private const int MAX_TWEENS = 256;
     private Tween[] tweens = new Tween[MAX_TWEENS];
@@ -47,6 +50,7 @@ public class TweenManager : MonoBehaviour
             float progress = Mathf.Clamp01(t.elapsed / t.duration);
             Vector2 value = Vector2.LerpUnclamped(t.start, t.end, progress);
 
+            // Apply tween value
             switch (t.type)
             {
                 case TweenType.Move:
@@ -58,13 +62,36 @@ public class TweenManager : MonoBehaviour
                     break;
             }
 
+            // Check completion
             if (t.elapsed >= t.duration)
+            {
+                // Force exact final value
+                switch (t.type)
+                {
+                    case TweenType.Move:
+                        t.rect.anchoredPosition = t.end;
+                        break;
+
+                    case TweenType.Scale:
+                        t.rect.localScale = new Vector3(t.end.x, t.end.y, 1f);
+                        break;
+                }
+
+                // Cache callback before clearing
+                Action callback = t.onComplete;
+
                 t.active = false;
+                t.onComplete = null;
+
+                tweens[i] = t;
+
+                callback?.Invoke();
+                continue;
+            }
 
             tweens[i] = t;
         }
     }
-
 
     private int GetFreeTween()
     {
@@ -77,10 +104,10 @@ public class TweenManager : MonoBehaviour
         return -1;
     }
 
-    public void Move(RectTransform rect, Vector2 endPos, float duration)
+    public int Move(RectTransform rect, Vector2 endPos, float duration)
     {
         int i = GetFreeTween();
-        if (i == -1) return;
+        if (i == -1) return -1;
 
         tweens[i] = new Tween
         {
@@ -90,14 +117,17 @@ public class TweenManager : MonoBehaviour
             start = rect.anchoredPosition,
             end = endPos,
             duration = duration,
-            elapsed = 0f
+            elapsed = 0f,
+            onComplete = null
         };
+
+        return i;
     }
 
-    public void Scale(RectTransform rect, Vector3 endScale, float duration)
+    public int Scale(RectTransform rect, Vector3 endScale, float duration)
     {
         int i = GetFreeTween();
-        if (i == -1) return;
+        if (i == -1) return -1;
 
         tweens[i] = new Tween
         {
@@ -109,6 +139,20 @@ public class TweenManager : MonoBehaviour
             duration = duration,
             elapsed = 0f
         };
+        return i;
+    }
+
+    public void SetOnComplete(int tweenId, Action callback)
+    {
+        if (tweenId < 0 || tweenId >= MAX_TWEENS)
+            return;
+
+        if (!tweens[tweenId].active)
+            return;
+
+        Tween t = tweens[tweenId];
+        t.onComplete = callback;
+        tweens[tweenId] = t;
     }
 
 }
