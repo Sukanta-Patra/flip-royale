@@ -624,6 +624,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 811913404}
     m_Modifications:
     - target: {fileID: 873258552806832382, guid: 34e82b7168210c7459144f2a16d5a560, type: 3}
+      propertyPath: cardId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 873258552806832382, guid: 34e82b7168210c7459144f2a16d5a560, type: 3}
       propertyPath: cardSprite
       value: 
       objectReference: {fileID: -395431625, guid: 9a43f5431ace84873a0ccb2eb1d0bbb7, type: 3}
@@ -979,6 +983,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 811913404}
     m_Modifications:
+    - target: {fileID: 873258552806832382, guid: 34e82b7168210c7459144f2a16d5a560, type: 3}
+      propertyPath: cardId
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 873258552806832382, guid: 34e82b7168210c7459144f2a16d5a560, type: 3}
       propertyPath: cardSprite
       value: 
