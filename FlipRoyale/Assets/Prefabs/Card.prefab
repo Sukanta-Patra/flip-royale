@@ -90,4 +90,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardBackSprite: {fileID: 2051061860, guid: 3b5e446a5f115714a96de89ebd36c1c3, type: 3}
-  cardSprite: {fileID: 0}
+  cardId: 0

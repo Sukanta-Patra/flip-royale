@@ -10,7 +10,7 @@ public class Card : MonoBehaviour, IPointerDownHandler
 
     [SerializeField] private Sprite cardBackSprite;
 
-    [SerializeField] private Sprite cardSprite;
+    private Sprite cardSprite;
 
     private Image cardImage;
     private TweenManager tween;
@@ -37,6 +37,12 @@ public class Card : MonoBehaviour, IPointerDownHandler
 
         gameManager.OnCardSelected(this);
         StartCoroutine(ShowCardAnim());
+    }
+
+    public void InitCard(int id, Sprite sprite)
+    {
+        cardId = id;
+        cardSprite = sprite;
     }
 
     private IEnumerator ShowCardAnim()
