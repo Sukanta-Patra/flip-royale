@@ -36,11 +36,13 @@ public class GameManager : MonoBehaviour
         int totalCards = rows * columns;
         int pairCount = totalCards / 2;
 
-        if (pairCount > cardSprites.Count)
+        /*Removing this check as this limits the grid settings and card pairs
+         * For e.g., 5x6 grid
+         * if (pairCount > cardSprites.Count)
         {
             Debug.LogError("Not enough sprites for this grid size");
             yield break;
-        }
+        }*/
 
         List<int> ids = GenerateShuffledIds(pairCount, totalCards);
         RectTransform parentRect = cardContainer as RectTransform;
@@ -63,19 +65,18 @@ public class GameManager : MonoBehaviour
     private List<int> GenerateShuffledIds(int pairCount, int totalCards)
     {
         List<int> ids = new List<int>(totalCards);
-        List<int> available = new List<int>();
 
-        for (int i = 0; i < cardSprites.Count; i++)
-            available.Add(i);
-
-        Shuffle(available);
+        int spriteCount = cardSprites.Count;
 
         for (int i = 0; i < pairCount; i++)
         {
-            int id = available[i];
-            ids.Add(id);
-            ids.Add(id);
+            int spriteIndex = Random.Range(0, spriteCount);
+
+            // Add a matching pair
+            ids.Add(spriteIndex);
+            ids.Add(spriteIndex);
         }
+
         Shuffle(ids);
 
         return ids;

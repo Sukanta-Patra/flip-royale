@@ -166,8 +166,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 338458b6702c92843984b0a71b39811f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rows: 2
-  columns: 2
+  rows: 5
+  columns: 6
   cardPrefab: {fileID: 8687567298007166942, guid: 34e82b7168210c7459144f2a16d5a560, type: 3}
   cardContainer: {fileID: 811913404}
   cardSprites:
