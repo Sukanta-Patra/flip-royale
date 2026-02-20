@@ -79,6 +79,17 @@ public class Card : MonoBehaviour, IPointerDownHandler
         tween.SetOnComplete(tween.Scale(rectTransform, Vector3.zero, 0.15f), () => gameObject.SetActive(false));
     }
 
+    public void ResetCard()
+    {
+        StopAllCoroutines();
+        transform.localScale = Vector3.one;
+        isShowing = false;
+        isMatched = false;
+        readyToMatch = false; 
+        gameObject.GetComponent<Image>().sprite = cardBackSprite;
+        gameObject.SetActive(true);
+    }
+
 
     public void ShowCardFront() => cardImage.sprite = cardSprite;
     public void ShowCardBack() => cardImage.sprite = cardBackSprite;

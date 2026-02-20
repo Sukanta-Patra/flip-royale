@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<Sprite> cardSprites;
 
     private List<Card> currentPair = new List<Card>();
+    private List<Card> cardsList = new List<Card>();
 
     public float spacing = 10f;
 
@@ -76,7 +77,9 @@ public class GameManager : MonoBehaviour
         {
             GameObject cardObj = Instantiate(cardPrefab, cardContainer);
             int id = ids[i];
-            cardObj.GetComponent<Card>().InitCard(id, cardSprites[id]);
+            Card card = cardObj.GetComponent<Card>();
+            card.InitCard(id, cardSprites[id]);
+            cardsList.Add(card);
         }
 
         yield return null;
@@ -113,6 +116,12 @@ public class GameManager : MonoBehaviour
             list[i] = list[rand];
             list[rand] = temp;
         }
+    }
+
+    public void ResetCards()
+    {
+        foreach (Card c in cardsList)
+            c.ResetCard();
     }
 
     public void OnCardSelected(Card clickedCard)
