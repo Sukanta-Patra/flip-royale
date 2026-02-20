@@ -36,23 +36,45 @@ public class GameManager : MonoBehaviour
         int totalCards = rows * columns;
         int pairCount = totalCards / 2;
 
-        /*Removing this check as this limits the grid settings and card pairs
-         * For e.g., 5x6 grid
-         * if (pairCount > cardSprites.Count)
-        {
-            Debug.LogError("Not enough sprites for this grid size");
-            yield break;
-        }*/
-
         List<int> ids = GenerateShuffledIds(pairCount, totalCards);
-        RectTransform parentRect = cardContainer as RectTransform;
 
         GridLayoutGroup grid = cardContainer.GetComponent<GridLayoutGroup>();
+        RectTransform parentRect = cardContainer as RectTransform;
+
+        grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
         grid.constraintCount = columns;
+
+        float containerWidth = parentRect.rect.width;
+        float containerHeight = parentRect.rect.height;
+
+        float totalSpacingX = grid.spacing.x * (columns - 1);
+        float totalSpacingY = grid.spacing.y * (rows - 1);
+
+        float totalPaddingX = grid.padding.left + grid.padding.right;
+        float totalPaddingY = grid.padding.top + grid.padding.bottom;
+
+        float availableWidth = containerWidth - totalSpacingX - totalPaddingX;
+        float availableHeight = containerHeight - totalSpacingY - totalPaddingY;
+
+        float maxCellWidth = availableWidth / columns;
+        float maxCellHeight = availableHeight / rows;
+
+        float aspectRatio = 0.7f; // general card ratio
+
+        float cellWidth = maxCellWidth;
+        float cellHeight = cellWidth / aspectRatio;
+
+        if (cellHeight > maxCellHeight)
+        {
+            cellHeight = maxCellHeight;
+            cellWidth = cellHeight * aspectRatio;
+        }
+
+        grid.cellSize = new Vector2(cellWidth, cellHeight);
 
         for (int i = 0; i < totalCards; i++)
         {
-            GameObject cardObj = Instantiate(cardPrefab, cardContainer);          
+            GameObject cardObj = Instantiate(cardPrefab, cardContainer);
             int id = ids[i];
             cardObj.GetComponent<Card>().InitCard(id, cardSprites[id]);
         }
