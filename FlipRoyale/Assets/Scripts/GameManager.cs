@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Text scoreText;
     [SerializeField] private Text comboText;
     [SerializeField] private Text turnsLeftText;
+    [SerializeField] private GameObject endGamePanel;
+    [SerializeField] private Text resultText;
 
     [Space]
     [SerializeField] private GameObject cardPrefab;
@@ -151,6 +153,8 @@ public class GameManager : MonoBehaviour
         totalCardsMatched = 0;
         turns = GameSettings.Instance.GetTurns();
 
+        endGamePanel.SetActive(false);
+
         UpdateUI();
 
         foreach (Card c in cardsList)
@@ -219,13 +223,17 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log("Win");
                 audioManager.PlayGameWinSFX();
-                //TODO:Show game win panel
+                //Show game win panel
+                endGamePanel.SetActive(true);
+                resultText.text = "You Won! Go to Home menu to beat your score";
             }
             else if (turns == 0 && totalCardsMatched < totalPairs)
             {
                 Debug.Log("Lose");
                 audioManager.PlayGameOverSFX();
-                //TODO: Show game over panel
+                //Show game over panel
+                endGamePanel.SetActive(true);
+                resultText.text = "You Lost! Retry or Go to Home menu";
             }
         }
         else
