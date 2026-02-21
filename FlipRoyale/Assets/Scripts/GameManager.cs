@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+    private const string MENU_SCENE = "Menu";
+
     [Header("Card Grid Settings")]
     [SerializeField] private int rows = 2;
     [SerializeField] private int columns = 2;
@@ -39,6 +41,9 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        rows = GameSettings.Instance.GetRows();
+        columns = GameSettings.Instance.GetColumns();
+
         UpdateUI();
         StartCoroutine(SpawnCards());
     }
@@ -212,6 +217,11 @@ public class GameManager : MonoBehaviour
         scoreText.text = $"Score : {score}";
         comboText.text = $"Combo : +{comboScoreInc}";
         turnsLeftText.text = $"Turns Left : {turns}";
+    }
+
+    public void OnMenu()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(MENU_SCENE);
     }
 
 }
