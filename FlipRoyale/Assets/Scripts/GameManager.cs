@@ -11,13 +11,25 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int rows = 2;
     [SerializeField] private int columns = 2;
 
+    [Header("UI")]
+    [SerializeField] private Text scoreText;
+    [SerializeField] private Text comboText;
+    [SerializeField] private Text turnsLeftText;
+
+    [Space]
     [SerializeField] private GameObject cardPrefab;
     [SerializeField] private Transform cardContainer;
 
     [SerializeField] private List<Sprite> cardSprites;
 
+    [SerializeField] private int turns = 0;
+    
     private List<Card> currentPair = new List<Card>();
     private List<Card> cardsList = new List<Card>();
+
+    private bool lastCardMatched = false;
+    private int score = 0;
+    private int comboScoreInc = 0;
 
     private void Awake()
     {
@@ -27,7 +39,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-       StartCoroutine(SpawnCards());
+        UpdateUI();
+        StartCoroutine(SpawnCards());
     }
 
     private IEnumerator SpawnCards()
@@ -118,12 +131,27 @@ public class GameManager : MonoBehaviour
 
     public void ResetCards()
     {
+        //Resetting values
+        comboScoreInc = 0;
+        lastCardMatched = false;
+        score = 0;
+
+        UpdateUI();
+
         foreach (Card c in cardsList)
             c.ResetCard();
     }
 
     public void OnCardSelected(Card clickedCard)
     {
+        if (turns < 1)
+        {
+            //TODO: Show Game over panel
+            return;
+        }
+
+        turns--;
+
         currentPair.Add(clickedCard);
 
         if (currentPair.Count >= 2)
@@ -145,19 +173,32 @@ public class GameManager : MonoBehaviour
         if (first.GetCardId() == second.GetCardId())
         {
             //TODO: match SFX
-            //TODO: Increase score
+            //Increase score
+            score++;
+            if (lastCardMatched)
+            {
+                comboScoreInc++;
+                score += comboScoreInc;
+            }
+
+            UpdateUI();
 
             first.SetIsMatched(true);
             second.SetIsMatched(true);
 
+            lastCardMatched = true;
+
             yield return new WaitForSeconds(0.3f);
             first.DisableCard();
             second.DisableCard();
+
+            //TODO:Show Game Win panel
         }
         else
         {
             //TODO: mismatch SFX
 
+            lastCardMatched = false;
             yield return new WaitForSeconds(1f); //Adding a little delay to show the mismatch
             first.CloseCard();
             second.CloseCard();
@@ -166,5 +207,11 @@ public class GameManager : MonoBehaviour
         yield return null;
     }
 
+    private void UpdateUI()
+    {
+        scoreText.text = $"Score : {score}";
+        comboText.text = $"Combo : +{comboScoreInc}";
+        turnsLeftText.text = $"Turns Left : {turns}";
+    }
 
 }
