@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
     private bool lastCardMatched = false;
     private int score = 0;
     private int comboScoreInc = 0;
+    private int totalCardsMatched = 0;
+
 
     private void Awake()
     {
@@ -141,6 +143,7 @@ public class GameManager : MonoBehaviour
         comboScoreInc = 0;
         lastCardMatched = false;
         score = 0;
+        totalCardsMatched = 0;
 
         UpdateUI();
 
@@ -152,12 +155,10 @@ public class GameManager : MonoBehaviour
     {
         if (turns < 1)
         {
-            //TODO: Show Game over panel
             return;
         }
 
         turns--;
-
         currentPair.Add(clickedCard);
 
         if (currentPair.Count >= 2)
@@ -181,6 +182,7 @@ public class GameManager : MonoBehaviour
             //TODO: match SFX
             //Increase score
             score++;
+            totalCardsMatched++;
             if (lastCardMatched)
             {
                 comboScoreInc++;
@@ -198,7 +200,15 @@ public class GameManager : MonoBehaviour
             first.DisableCard();
             second.DisableCard();
 
-            //TODO:Show Game Win panel
+            //Game Win Check
+            if (totalCardsMatched == rows * columns)
+            {
+                //TODO:Show game win panel
+            }
+            else if (turns == 0 && totalCardsMatched < rows * columns)
+            { 
+                //TODO: Show game over panel
+            }
         }
         else
         {
