@@ -221,11 +221,10 @@ public class GameManager : MonoBehaviour
             first.DisableCard();
             second.DisableCard();
 
-            //Game Win Check
-            if (totalCardsMatched == totalPairs)
-            {
-                Debug.Log("Win");
 
+            //Game Win Check
+            if (totalCardsMatched == rows * columns)
+            {
                 SaveManager.AddScore(score);
 
                 audioManager.PlayGameWinSFX();
@@ -233,9 +232,8 @@ public class GameManager : MonoBehaviour
                 endGamePanel.SetActive(true);
                 resultText.text = "You Won! Go to Home menu to beat your score";
             }
-            else if (turns == 0 && totalCardsMatched < totalPairs)
+            else if (turns <= 0 && totalCardsMatched < rows * columns)
             {
-                Debug.Log("Lose");
                 audioManager.PlayGameOverSFX();
                 //Show game over panel
                 endGamePanel.SetActive(true);
@@ -252,6 +250,14 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(1f); //Adding a little delay to show the mismatch
             first.CloseCard();
             second.CloseCard();
+
+            if (turns <= 0 && totalCardsMatched < rows * columns)
+            {
+                audioManager.PlayGameOverSFX();
+                //Show game over panel
+                endGamePanel.SetActive(true);
+                resultText.text = "You Lost! Retry or Go to Home menu";
+            }
         }
 
         yield return null;
