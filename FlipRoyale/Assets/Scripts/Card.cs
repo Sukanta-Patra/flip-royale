@@ -35,8 +35,7 @@ public class Card : MonoBehaviour, IPointerDownHandler
     {
         if (isShowing || isMatched) return; //TODO: Add Game Over condition later
 
-        gameManager.OnCardSelected(this);
-        StartCoroutine(ShowCardAnim());
+        gameManager.OnCardSelected(this); 
     }
 
     public void InitCard(int id, Sprite sprite)
@@ -44,6 +43,8 @@ public class Card : MonoBehaviour, IPointerDownHandler
         cardId = id;
         cardSprite = sprite;
     }
+
+    public void ShowCard() => StartCoroutine(ShowCardAnim());
 
     private IEnumerator ShowCardAnim()
     {

@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
     private int score = 0;
     private int comboScoreInc = 0;
     private int totalCardsMatched = 0;
-
+    private AudioManager audioManager;
     private int totalPairs;
 
     private void Awake()
@@ -47,6 +47,8 @@ public class GameManager : MonoBehaviour
         rows = GameSettings.Instance.GetRows();
         columns = GameSettings.Instance.GetColumns();
         turns = GameSettings.Instance.GetTurns();
+
+        audioManager = AudioManager.Instance;
 
         UpdateUI();
         StartCoroutine(SpawnCards());
@@ -140,6 +142,8 @@ public class GameManager : MonoBehaviour
 
     public void ResetCards()
     {
+        audioManager.PlayButtonSFX();
+
         //Resetting values
         comboScoreInc = 0;
         lastCardMatched = false;
@@ -185,10 +189,14 @@ public class GameManager : MonoBehaviour
 
         if (first.GetCardId() == second.GetCardId())
         {
-            //TODO: match SFX
+            //match SFX
+            audioManager.PlayCardMatchSFX();
+
             //Increase score
             score++;
+
             totalCardsMatched++;
+
             if (lastCardMatched)
             {
                 comboScoreInc++;
@@ -243,6 +251,7 @@ public class GameManager : MonoBehaviour
 
     public void OnMenu()
     {
+        audioManager.PlayButtonSFX();
         UnityEngine.SceneManagement.SceneManager.LoadScene(MENU_SCENE);
     }
 

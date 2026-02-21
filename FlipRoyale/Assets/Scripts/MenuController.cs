@@ -17,14 +17,18 @@ public class MenuController : MonoBehaviour
     private int columns;
     private int rows;
     private int turns;
+    private AudioManager audioManager;
 
     private void Start()
     {
+        audioManager = AudioManager.Instance;
         startGameButton.interactable = false;
     }
 
     public void OnRowColumnInputChanged()
     {
+        audioManager.PlayButtonSFX();
+
         if (string.IsNullOrEmpty(rowsInput.text.Trim()) || string.IsNullOrEmpty(columnsInput.text.Trim()))
         {
             totalPairsText.text = "Enter desired rows and columns to start the game.";
@@ -60,6 +64,8 @@ public class MenuController : MonoBehaviour
 
     public void OnStartGame()
     {
+        audioManager.PlayButtonSFX();
+
         //Save grid settings
         GameSettings.Instance.SetRows(rows);
         GameSettings.Instance.SetColumns(columns);
