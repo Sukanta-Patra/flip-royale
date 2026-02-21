@@ -944,7 +944,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Last 5 scores
+  m_Text: Top 5 scores
 --- !u!222 &1122211351
 CanvasRenderer:
   m_ObjectHideFlags: 0

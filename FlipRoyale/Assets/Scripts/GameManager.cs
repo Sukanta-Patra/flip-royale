@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
     private bool lastCardMatched = false;
     private int score = 0;
     private int comboScoreInc = 0;
-    private int totalCardsMatched = 0;
+    private int totalPairsMatched = 0;
     private AudioManager audioManager;
     private int totalPairs;
 
@@ -151,7 +151,7 @@ public class GameManager : MonoBehaviour
         comboScoreInc = 0;
         lastCardMatched = false;
         score = 0;
-        totalCardsMatched = 0;
+        totalPairsMatched = 0;
         turns = GameSettings.Instance.GetTurns();
 
         comboText.text = "";
@@ -202,7 +202,7 @@ public class GameManager : MonoBehaviour
             //Increase score
             score++;
 
-            totalCardsMatched++;
+            totalPairsMatched++;
 
             if (lastCardMatched)
             {
@@ -222,9 +222,12 @@ public class GameManager : MonoBehaviour
             second.DisableCard();
 
 
+            Debug.Log($"TEST1: turns {turns} totalPairsMatched {totalPairsMatched} totalPairs {totalPairs}");
             //Game Win Check
-            if (totalCardsMatched == rows * columns)
+            if (totalPairsMatched == totalPairs)
             {
+                Debug.Log("Win");
+
                 SaveManager.AddScore(score);
 
                 audioManager.PlayGameWinSFX();
@@ -232,8 +235,9 @@ public class GameManager : MonoBehaviour
                 endGamePanel.SetActive(true);
                 resultText.text = "You Won! Go to Home menu to beat your score";
             }
-            else if (turns <= 0 && totalCardsMatched < rows * columns)
+            else if (turns <= 0 && totalPairsMatched < totalPairs)
             {
+                Debug.Log("Lose");
                 audioManager.PlayGameOverSFX();
                 //Show game over panel
                 endGamePanel.SetActive(true);
@@ -251,8 +255,9 @@ public class GameManager : MonoBehaviour
             first.CloseCard();
             second.CloseCard();
 
-            if (turns <= 0 && totalCardsMatched < rows * columns)
+            if (turns <= 0 && totalPairsMatched < totalPairs)
             {
+                Debug.Log("Lose");
                 audioManager.PlayGameOverSFX();
                 //Show game over panel
                 endGamePanel.SetActive(true);
