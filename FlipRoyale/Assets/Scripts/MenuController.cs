@@ -10,6 +10,7 @@ public class MenuController : MonoBehaviour
     [SerializeField] private InputField rowsInput;
     [SerializeField] private InputField columnsInput;
     [SerializeField] private Text totalPairsText;
+    [SerializeField] private Text scoresText;
 
     [SerializeField] private Button startGameButton;
 
@@ -23,6 +24,7 @@ public class MenuController : MonoBehaviour
     {
         audioManager = AudioManager.Instance;
         startGameButton.interactable = false;
+        ShowScores();
     }
 
     public void OnRowColumnInputChanged()
@@ -60,6 +62,22 @@ public class MenuController : MonoBehaviour
             totalPairsText.text = $"Total Pairs : <color=red>{pairs}</color>(Total pairs should not exceed {pairsLimit})";
             startGameButton.interactable = false;
         }
+    }
+
+    private void ShowScores()
+    {
+        List<int> scores = SaveManager.GetScores();
+        if (scores.Count == 0)
+        {
+            scoresText.text = "No scores to load.";
+            return;
+        }
+
+        foreach (int s in scores)
+        {
+            scoresText.text += $"{s}\n";
+        }
+
     }
 
     public void OnStartGame()

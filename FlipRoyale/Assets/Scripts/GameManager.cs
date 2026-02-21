@@ -225,6 +225,9 @@ public class GameManager : MonoBehaviour
             if (totalCardsMatched == totalPairs)
             {
                 Debug.Log("Win");
+
+                SaveManager.AddScore(score);
+
                 audioManager.PlayGameWinSFX();
                 //Show game win panel
                 endGamePanel.SetActive(true);
