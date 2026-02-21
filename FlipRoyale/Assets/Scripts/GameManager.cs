@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
         turns = GameSettings.Instance.GetTurns();
 
         audioManager = AudioManager.Instance;
+        comboText.text = "";
 
         UpdateUI();
         StartCoroutine(SpawnCards());
@@ -153,6 +154,8 @@ public class GameManager : MonoBehaviour
         totalCardsMatched = 0;
         turns = GameSettings.Instance.GetTurns();
 
+        comboText.text = "";
+
         endGamePanel.SetActive(false);
 
         UpdateUI();
@@ -242,6 +245,7 @@ public class GameManager : MonoBehaviour
             audioManager.PlayCardMismatchSFX();
 
             lastCardMatched = false;
+            comboText.text = "";
             yield return new WaitForSeconds(1f); //Adding a little delay to show the mismatch
             first.CloseCard();
             second.CloseCard();
@@ -253,7 +257,7 @@ public class GameManager : MonoBehaviour
     private void UpdateUI()
     {
         scoreText.text = $"Score : {score}";
-        comboText.text = $"Combo : +{comboScoreInc}";
+        if(lastCardMatched) comboText.text = $"Combo : +{comboScoreInc}";
         turnsLeftText.text = $"Turns Left : {turns}";
     }
 
