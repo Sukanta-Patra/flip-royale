@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     private int comboScoreInc = 0;
     private int totalCardsMatched = 0;
 
+    private int totalPairs;
 
     private void Awake()
     {
@@ -54,9 +55,9 @@ public class GameManager : MonoBehaviour
     private IEnumerator SpawnCards()
     {
         int totalCards = rows * columns;
-        int pairCount = totalCards / 2;
+        totalPairs = totalCards / 2;
 
-        List<int> ids = GenerateShuffledIds(pairCount, totalCards);
+        List<int> ids = GenerateShuffledIds(totalPairs, totalCards);
 
         GridLayoutGroup grid = cardContainer.GetComponent<GridLayoutGroup>();
         RectTransform parentRect = cardContainer as RectTransform;
@@ -144,6 +145,7 @@ public class GameManager : MonoBehaviour
         lastCardMatched = false;
         score = 0;
         totalCardsMatched = 0;
+        turns = GameSettings.Instance.GetTurns();
 
         UpdateUI();
 
@@ -158,7 +160,11 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        clickedCard.ShowCard();
+
         turns--;
+        UpdateUI();
+        audioManager.PlayCardFlipSFX();
         currentPair.Add(clickedCard);
 
         if (currentPair.Count >= 2)
@@ -201,18 +207,23 @@ public class GameManager : MonoBehaviour
             second.DisableCard();
 
             //Game Win Check
-            if (totalCardsMatched == rows * columns)
+            if (totalCardsMatched == totalPairs)
             {
+                Debug.Log("Win");
+                audioManager.PlayGameWinSFX();
                 //TODO:Show game win panel
             }
-            else if (turns == 0 && totalCardsMatched < rows * columns)
-            { 
+            else if (turns == 0 && totalCardsMatched < totalPairs)
+            {
+                Debug.Log("Lose");
+                audioManager.PlayGameOverSFX();
                 //TODO: Show game over panel
             }
         }
         else
         {
-            //TODO: mismatch SFX
+            //mismatch SFX
+            audioManager.PlayCardMismatchSFX();
 
             lastCardMatched = false;
             yield return new WaitForSeconds(1f); //Adding a little delay to show the mismatch
