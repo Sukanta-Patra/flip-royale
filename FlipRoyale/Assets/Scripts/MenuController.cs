@@ -47,7 +47,7 @@ public class MenuController : MonoBehaviour
             {
                 turns = (int) Mathf.Floor(rows * columns * 1.75f);
                 if (turns % 2 != 0) turns++; //Making sure total turns are always even for card pairs
-                totalPairsText.text = $"Total Pairs : <color=green>{pairs}</color>. Total calculated allowed : {turns}";
+                totalPairsText.text = $"Total Pairs : <color=green>{pairs}</color>. Total calculated turns allowed : {turns}";
                 startGameButton.interactable = true;
             }
         }
