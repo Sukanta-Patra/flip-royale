@@ -19,8 +19,6 @@ public class GameManager : MonoBehaviour
     private List<Card> currentPair = new List<Card>();
     private List<Card> cardsList = new List<Card>();
 
-    public float spacing = 10f;
-
     private void Awake()
     {
         Instance = this;
@@ -60,7 +58,7 @@ public class GameManager : MonoBehaviour
         float maxCellWidth = availableWidth / columns;
         float maxCellHeight = availableHeight / rows;
 
-        float aspectRatio = 0.7f; // general card ratio
+        float aspectRatio = cardSprites[0].rect.width / cardSprites[0].rect.height; // general card ratio
 
         float cellWidth = maxCellWidth;
         float cellHeight = cellWidth / aspectRatio;
