@@ -8,6 +8,7 @@ public class GameSettings : MonoBehaviour
 
     public int rows;
     public int columns;
+    public int turns;
 
     private void Awake()
     {
@@ -25,4 +26,6 @@ public class GameSettings : MonoBehaviour
     public int GetRows() => rows;
     public void SetColumns(int _columns) => columns = _columns;
     public int GetColumns() => columns;
+    public void SetTurns(int _turns) => turns = _turns;
+    public int GetTurns() => turns;
 }

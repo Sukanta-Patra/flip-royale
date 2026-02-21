@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private List<Sprite> cardSprites;
 
-    [SerializeField] private int turns = 0;
+    private int turns = 0;
     
     private List<Card> currentPair = new List<Card>();
     private List<Card> cardsList = new List<Card>();
@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
     {
         rows = GameSettings.Instance.GetRows();
         columns = GameSettings.Instance.GetColumns();
+        turns = GameSettings.Instance.GetTurns();
 
         UpdateUI();
         StartCoroutine(SpawnCards());

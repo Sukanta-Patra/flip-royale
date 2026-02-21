@@ -16,6 +16,7 @@ public class MenuController : MonoBehaviour
     private int pairsLimit = 30;
     private int columns;
     private int rows;
+    private int turns;
 
     private void Start()
     {
@@ -44,7 +45,8 @@ public class MenuController : MonoBehaviour
             }
             else
             {
-                totalPairsText.text = $"Total Pairs : <color=green>{pairs}</color>";
+                turns = (int) Mathf.Floor(rows * columns * 1.75f); 
+                totalPairsText.text = $"Total Pairs : <color=green>{pairs}</color>. Total calculated allowed : {turns}";
                 startGameButton.interactable = true;
             }
         }
@@ -60,6 +62,7 @@ public class MenuController : MonoBehaviour
         //Save grid settings
         GameSettings.Instance.SetRows(rows);
         GameSettings.Instance.SetColumns(columns);
+        GameSettings.Instance.SetTurns(turns);
 
         //Load Game scene
         UnityEngine.SceneManagement.SceneManager.LoadScene(GAME_SCENE);
